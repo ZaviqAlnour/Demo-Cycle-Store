@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - Cycle Store</title>
+    <link rel="stylesheet" href="./assets/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="app">
+        <div id="header-container"></div>
+        
+        <main class="main-content checkout-page">
+            <div class="container">
+                <div class="checkout-container">
+                    <div class="checkout-header">
+                        <h1>Checkout</h1>
+                        <div class="checkout-steps">
+                            <div class="step active">1. Cart</div>
+                            <div class="step active">2. Details</div>
+                            <div class="step active">3. Payment</div>
+                            <div class="step">4. Confirmation</div>
+                        </div>
+                    </div>
+                    
+                    <div class="checkout-content">
+                        <div class="checkout-summary">
+                            <h2>Order Summary</h2>
+                            <div id="checkout-items">
+                                <!-- Items will be loaded from JS -->
+                            </div>
+                            <div class="summary-totals">
+                                <div class="summary-row">
+                                    <span>Subtotal</span>
+                                    <span id="subtotal">$0.00</span>
+                                </div>
+                                <div class="summary-row">
+                                    <span>Shipping</span>
+                                    <span>FREE</span>
+                                </div>
+                                <div class="summary-row">
+                                    <span>Tax</span>
+                                    <span id="tax">$0.00</span>
+                                </div>
+                                <div class="summary-row total">
+                                    <span>Total</span>
+                                    <span id="total">$0.00</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="checkout-form-container">
+                            <div class="demo-notice">
+                                <div class="demo-notice-header">
+                                    <i class="fas fa-info-circle"></i>
+                                    <h3>Demo Notice</h3>
+                                </div>
+                                <p>This is a <strong>frontend-only demonstration</strong> of an e-commerce checkout flow.</p>
+                                <p>No real payments will be processed, and no orders will be placed or delivered.</p>
+                                <p>All data is stored locally in your browser using localStorage.</p>
+                            </div>
+                            
+                            <div class="checkout-mock-form">
+                                <h3>Mock Payment Details</h3>
+                                <div class="form-group">
+                                    <label>Card Number</label>
+                                    <input type="text" value="4242 4242 4242 4242" readonly>
+                                </div>
+                                
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label>Expiry Date</label>
+                                        <input type="text" value="12/28" readonly>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>CVC</label>
+                                        <input type="text" value="123" readonly>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label>Name on Card</label>
+                                    <input type="text" value="Demo User" readonly>
+                                </div>
+                                
+                                <button id="place-order-btn" class="btn btn-primary btn-block">
+                                    <i class="fas fa-shopping-bag"></i> Place Demo Order
+                                </button>
+                                
+                                <div id="order-message" class="order-message"></div>
+                            </div>
+                            
+                            <div class="back-to-store">
+                                <a href="./index.html" class="btn btn-secondary">
+                                    <i class="fas fa-arrow-left"></i> Back to Store
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        
+        <div id="footer-container"></div>
+    </div>
+
+    <script src="./assets/js/auth.js"></script>
+    <script src="./assets/js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            loadHeader();
+            loadFooter();
+            
+            // Check if user came from product page
+            const urlParams = new URLSearchParams(window.location.search);
+            const productId = urlParams.get('product');
+            
+            // Get current user
+            const currentUser = getCurrentUser();
+            
+            // Load product data
+            const products = getProducts();
+            const product = products.find(p => p.id === parseInt(productId)) || products[0];
+            
+            // Update checkout summary
+            updateCheckoutSummary(product);
+            
+            // Setup order button
+            const orderBtn = document.getElementById('place-order-btn');
+            const orderMessage = document.getElementById('order-message');
+            
+            orderBtn.addEventListener('click', function() {
+                // Show success message
+                orderMessage.textContent = `Demo order placed successfully! A confirmation would be sent to ${currentUser ? currentUser.email : 'your email'} in a real application.`;
+                orderMessage.className = 'order-message success';
+                
+                // Disable button after click
+                orderBtn.disabled = true;
+                orderBtn.innerHTML = '<i class="fas fa-check"></i> Order Placed (Demo)';
+                
+                // In a real app, we would send order data to a backend here
+                console.log('Demo order placed for product:', product.name);
+                
+                // Clear any checkout data from localStorage
+                localStorage.removeItem('checkoutProduct');
+            });
+            
+            function updateCheckoutSummary(product) {
+                const subtotal = product.price;
+                const tax = subtotal * 0.08; // 8% tax
+                const total = subtotal + tax;
+                
+                document.getElementById('checkout-items').innerHTML = `
+                    <div class="checkout-item">
+                        <div class="item-image">
+                            <img src="${product.image}" alt="${product.name}">
+                        </div>
+                        <div class="item-details">
+                            <h4>${product.name}</h4>
+                            <p>${product.category}</p>
+                        </div>
+                        <div class="item-price">$${product.price.toFixed(2)}</div>
+                    </div>
+                `;
+                
+                document.getElementById('subtotal').textContent = `$${subtotal.toFixed(2)}`;
+                document.getElementById('tax').textContent = `$${tax.toFixed(2)}`;
+                document.getElementById('total').textContent = `$${total.toFixed(2)}`;
+            }
+        });
+    </script>
+</body>
+</html>

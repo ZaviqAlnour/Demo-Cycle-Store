@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Cycle Store</title>
+    <link rel="stylesheet" href="./assets/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="app">
+        <div id="header-container"></div>
+        
+        <main class="main-content auth-page">
+            <div class="container">
+                <div class="auth-container">
+                    <div class="auth-card">
+                        <div class="auth-header">
+                            <h1>Create Account</h1>
+                            <p>Join Cycle Store to explore our premium bicycles</p>
+                        </div>
+                        
+                        <form id="register-form" class="auth-form">
+                            <div class="form-group">
+                                <label for="name">Full Name</label>
+                                <input type="text" id="name" name="name" required placeholder="John Smith">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="email">Email Address</label>
+                                <input type="email" id="email" name="email" required placeholder="you@example.com">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="password">Password</label>
+                                <input type="password" id="password" name="password" required placeholder="Create a password (min. 6 characters)">
+                                <small>Must be at least 6 characters long</small>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="confirm-password">Confirm Password</label>
+                                <input type="password" id="confirm-password" name="confirm-password" required placeholder="Re-enter your password">
+                            </div>
+                            
+                            <button type="submit" class="btn btn-primary btn-block">Create Account</button>
+                        </form>
+                        
+                        <div class="auth-footer">
+                            <p>Already have an account? <a href="./login.html">Sign in here</a></p>
+                            <p><a href="./index.html">Back to Store</a></p>
+                        </div>
+                        
+                        <div id="auth-message" class="auth-message"></div>
+                    </div>
+                    
+                    <div class="auth-info">
+                        <h2>Why Register?</h2>
+                        <ul class="benefits-list">
+                            <li><i class="fas fa-check-circle"></i> Save your favorite bicycles</li>
+                            <li><i class="fas fa-check-circle"></i> Faster checkout process</li>
+                            <li><i class="fas fa-check-circle"></i> Access exclusive offers</li>
+                            <li><i class="fas fa-check-circle"></i> Track your orders</li>
+                        </ul>
+                        <p class="note">This is a frontend-only demo. Your data is stored locally in your browser and will persist until you clear browser data.</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+        
+        <div id="footer-container"></div>
+    </div>
+
+    <script src="./assets/js/auth.js"></script>
+    <script src="./assets/js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            loadHeader();
+            loadFooter();
+            
+            // Check if user is already logged in
+            if (isLoggedIn()) {
+                window.location.href = './index.html';
+                return;
+            }
+            
+            // Setup registration form
+            const registerForm = document.getElementById('register-form');
+            const authMessage = document.getElementById('auth-message');
+            
+            registerForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const name = document.getElementById('name').value.trim();
+                const email = document.getElementById('email').value.trim();
+                const password = document.getElementById('password').value;
+                const confirmPassword = document.getElementById('confirm-password').value;
+                
+                // Clear previous messages
+                authMessage.textContent = '';
+                authMessage.className = 'auth-message';
+                
+                // Validation
+                if (!name || !email || !password || !confirmPassword) {
+                    showAuthMessage('Please fill in all fields', 'error');
+                    return;
+                }
+                
+                if (password.length < 6) {
+                    showAuthMessage('Password must be at least 6 characters long', 'error');
+                    return;
+                }
+                
+                if (password !== confirmPassword) {
+                    showAuthMessage('Passwords do not match', 'error');
+                    return;
+                }
+                
+                // Attempt registration
+                const registerResult = registerUser(name, email, password);
+                
+                if (registerResult.success) {
+                    showAuthMessage('Account created successfully! Redirecting to login...', 'success');
+                    setTimeout(() => {
+                        window.location.href = './login.html';
+                    }, 1500);
+                } else {
+                    showAuthMessage(registerResult.message, 'error');
+                }
+            });
+            
+            function showAuthMessage(message, type) {
+                authMessage.textContent = message;
+                authMessage.className = `auth-message ${type}`;
+            }
+        });
+    </script>
+</body>
+</html>
