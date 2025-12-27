@@ -29,28 +29,6 @@ All user data is stored in the browser using **localStorage**.
 
 ---
 
-## Project Structure
-
-cycle-store/
-├── index.html
-├── login.html
-├── register.html
-├── checkout.html
-├── pages/
-│ ├── product.html
-│ └── profile.html
-├── components/
-│ ├── header.html
-│ └── footer.html
-├── assets/
-│ ├── css/
-│ │ └── style.css
-│ ├── js/
-│ │ ├── main.js
-│ │ └── auth.js
-│ └── images/
----
-
 ## How to Run
 
 **Do not open files directly (`file://`)**
