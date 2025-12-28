@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - CycleStore</title>
+    <link rel="stylesheet" href="./assets/css/global.css">
+    <link rel="stylesheet" href="./assets/css/login.css">
+</head>
+<body>
+    <header></header>
+    
+    <main>
+        <div class="auth-container">
+            <div class="auth-card card">
+                <div class="auth-header">
+                    <h1>Welcome Back</h1>
+                    <p>Sign in to your CycleStore account</p>
+                </div>
+                
+                <form id="login-form" class="auth-form">
+                    <div class="form-group">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" id="email" class="form-control" required>
+                        <div class="error-message" id="email-error"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="password" class="form-label">Password</label>
+                        <input type="password" id="password" class="form-control" required>
+                        <div class="error-message" id="password-error"></div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary btn-block" id="submit-btn">
+                        Sign In
+                    </button>
+                    
+                    <div class="auth-footer">
+                        <p>Don't have an account? <a href="./register.html">Register here</a></p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+    
+    <footer></footer>
+    
+    <script src="./assets/js/main.js"></script>
+    <script src="./assets/js/auth.js"></script>
+    <script src="./assets/js/login.js"></script>
+</body>
+</html>
