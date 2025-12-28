@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Details - CycleStore</title>
+    <link rel="stylesheet" href="../assets/css/global.css">
+    <link rel="stylesheet" href="../assets/css/product.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header></header>
+    
+    <main>
+        <div class="container">
+            <nav class="breadcrumb">
+                <a href="../index.html">Home</a> &gt; 
+                <a href="../index.html">Products</a> &gt; 
+                <span>Product Details</span>
+            </nav>
+            
+            <div class="product-detail" id="product-detail">
+                <!-- Product will be loaded here -->
+            </div>
+            
+            <div class="loading" id="loading">
+                <i class="fas fa-spinner fa-spin"></i> Loading product details...
+            </div>
+            
+            <div class="error" id="error" style="display: none;">
+                Failed to load product. Please try again.
+                <a href="../index.html" class="btn btn-secondary mt-2">Back to Store</a>
+            </div>
+        </div>
+    </main>
+    
+    <footer></footer>
+    
+    <script src="../assets/js/main.js"></script>
+    <script src="../assets/js/auth.js"></script>
+    <script src="../assets/js/product.js"></script>
+</body>
+</html>
